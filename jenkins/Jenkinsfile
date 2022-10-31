@@ -10,6 +10,7 @@ node{
         }
         stage('Deliver') {
             sh './jenkins/scripts/deliver.sh'
+            input message: 'Lanjutkan ke tahap Deploy?'
         }
         stage('Deploy') {
             sh 'HEROKU_API_KEY="fe69b144-b1ae-49b2-953a-4232782e8ceb" mvn heroku:deploy -Dheroku.appName=howling-pumpkin-46531'
