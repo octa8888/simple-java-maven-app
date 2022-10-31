@@ -1,6 +1,7 @@
 node{
     docker.image('maven:3.5.4-alpine').inside('-v /root/.m2:/root/.m2'){
         stage('Build') {
+            git branch: 'master', credentialsId: '0db2b3e0-aed5-4f68-8c68-a5280954063c', url: 'https://github.com/octa8888/simple-java-maven-app'
             sh 'mvn -B -DskipTests clean package'
         }
         stage('Test') {
@@ -9,6 +10,10 @@ node{
         }
         stage('Deliver') {
             sh './jenkins/scripts/deliver.sh'
+        }
+        stage('Deploy') {
+            sh 'HEROKU_API_KEY="fe69b144-b1ae-49b2-953a-4232782e8ceb" mvn heroku:deploy -Dheroku.appName=howling-pumpkin-46531'
+            sleep 60
         }
     }
     
